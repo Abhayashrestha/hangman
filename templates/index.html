@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hangman</title>
+  <style>
+    body {font-family: Arial, sans-serif; text-align:center; margin-top:50px;}
+    #hints {font-size:2em; letter-spacing:0.5em; margin:20px;}
+    #hangman {white-space:pre; font-family:monospace;}
+    #wrong {margin:10px;}
+  </style>
+</head>
+<body>
+  <h1>Hangman</h1>
+  <div id="hangman"></div>
+  <div id="hints"></div>
+  <input id="guess" maxlength="1">
+  <button onclick="sendGuess()">Guess</button>
+  <button onclick="restartGame()">Restart</button>
+  <div id="wrong"></div>
+  <div id="message"></div>
+<script>
+async function updateState(){
+  const res = await fetch('/state');
+  const data = await res.json();
+  document.getElementById('hints').textContent = data.hints.split('').join(' ');
+  document.getElementById('wrong').textContent = 'Wrong guesses: ' + data.wrong_guesses.join(', ');
+  document.getElementById('hangman').textContent = data.hangman.join('\n');
+}
+async function sendGuess(){
+  const ch = document.getElementById('guess').value;
+  document.getElementById('guess').value = '';
+  const res = await fetch('/guess', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({guess: ch})
+  });
+  const data = await res.json();
+  document.getElementById('hints').textContent = data.hints.split('').join(' ');
+  document.getElementById('wrong').textContent = 'Wrong guesses: ' + data.wrong_guesses.join(', ');
+  document.getElementById('hangman').textContent = data.hangman.join('\n');
+  if(data.message === 'win'){
+    document.getElementById('message').textContent = 'You win!';
+  }else if(data.message === 'lose'){
+    document.getElementById('message').textContent = 'You lose! The word was ' + data.answer;
+  }else{
+    document.getElementById('message').textContent = '';
+  }
+}
+async function restartGame(){
+  await fetch('/restart', {method:'POST'});
+  document.getElementById('message').textContent = '';
+  updateState();
+}
+updateState();
+</script>
+</body>
+</html>
