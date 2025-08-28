@@ -2,27 +2,43 @@ import random
 #random module is used to select random words from the list
 words= ["apple","banana","cherry","mango","litchi","orange","grape"]
 #creating askii art for the hangman representation
-hangman_art= {0:("   "
-                 "   "
-                 "   "),
-               1:(" 0  ",
-                  "   ",
-                  "   "),
-               2:(" 0  ",
-                  " |  ",
-                  "   "),
-                3:(" 0  ",
-                   "/|  "
-                   "   "),
-                4:(" 0  ",
-                   "/|\\ ",
-                   "   "),
-                5:(" 0  ",
-                   "/|\\ ",
-                   "/   "),
-                6:(" 0  ",
-                   "/|\\  ",
-                   "/ \\  ")}
+hangman_art = {
+    0: (
+        "   ",
+        "   ",
+        "   ",
+    ),
+    1: (
+        " 0  ",
+        "   ",
+        "   ",
+    ),
+    2: (
+        " 0  ",
+        " |  ",
+        "   ",
+    ),
+    3: (
+        " 0  ",
+        "/|  ",
+        "   ",
+    ),
+    4: (
+        " 0  ",
+        "/|\\ ",
+        "   ",
+    ),
+    5: (
+        " 0  ",
+        "/|\\ ",
+        "/   ",
+    ),
+    6: (
+        " 0  ",
+        "/|\\  ",
+        "/ \\  ",
+    ),
+}
 
 #creating functions to display hangman, answer, and hints
 
